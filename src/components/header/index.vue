@@ -4,14 +4,14 @@
       <div class="logo"><img src="./logo.png" alt=""></div>
       <div class="menu fn-clear">
         <ul>
-          <li v-if="directories.length !==0" v-for="(item, index) in directories" :class="['menu_li', {menu_hover: index===0}]">
-            <a href="javascript:void(0)">{{item.name}}</a>
+          <li v-if="directories.length>0" v-for="(item, index) in directories" :class="['menu_li', {menu_hover: index===$store.state.dIndex}]">
+            <a @click.prevent="changeDIndex(index)">{{item.name}}</a>
           </li>
-          <li v-if="directories.length === 0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
-          <li v-if="role==='admin'" class="addcatalog">
+          <li v-if="directories.length===0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
+          <li v-if="$store.state.role==='admin'" class="addcatalog">
             <el-popover ref="popover" placement="bottom" width="300" trigger="click">
-              <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
-                <el-form-item>
+              <el-form :inline="true" :show-message="false" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
+                <el-form-item prop="name">
                   <el-input v-model="ruleForm.name" placeholder="请输入目录名称" class="input-name"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -23,7 +23,7 @@
           </li>
         </ul>
       </div>
-      <div v-if="role==='admin'" class="admin-center">
+      <div v-if="$store.state.role==='admin'" class="admin-center">
         <router-link to="/" class="btn-admin">管理中心</router-link>
       </div>
     </div>
@@ -37,10 +37,11 @@ export default {
     role: {
       type: String,
       default: 'user'
-    },
-    directories: {
-      type: Array,
-      default: []
+    }
+  },
+  computed: {
+    directories() {
+      return this.$store.state.list;
     }
   },
   data() {
@@ -51,18 +52,16 @@ export default {
       rules: {
         name: [{
           required: true,
-          message: '请输入活动名称',
-          trigger: 'blur'
-        }, {
-          min: 3,
-          max: 5,
-          message: '长度在 3 到 5 个字符',
+          message: '请输入目录名称',
           trigger: 'blur'
         }]
       }
     };
   },
   methods: {
+    changeDIndex(index) {
+      this.$store.dispatch('changeDIndex', index);
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

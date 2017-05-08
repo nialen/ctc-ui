@@ -4,47 +4,78 @@
       <div class="nav-title">所有分类：</div>
       <div class="nav fn-clear">
         <ul>
-          <li class="nav-li nav-li-select"><a href="javascript:void(0)">布局</a></li>
-          <li class="nav-li nocategory">
-            <a href="javascript:void(0)"><img src="./addclass.png" alt="">添加分类</a>
+          <li v-if="$store.state.role==='admin'" class="nav-li nocategory">
+            <el-popover ref="popover" placement="bottom" width="300" trigger="click">
+              <el-form :inline="true" :show-message="false" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
+                <el-form-item prop="name">
+                  <el-input v-model="ruleForm.name" placeholder="请输入分类名称" class="input-name"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                </el-form-item>
+              </el-form>
+            </el-popover>
+            <a v-popover:popover href="javascript:void(0)"><img src="./addclass.png" alt="">添加分类</a>
           </li>
-          <li class="nav-li nocategory"><a href="javascript:void(0)">暂无分类</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">公共头部</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">菜单目录</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">Tab</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">工具栏</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">表格</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">表单</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">搜索</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">翻页</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">图表</a></li>
-          <li class="nav-li"><a href="javascript:void(0)">步骤导航</a></li>
+          <li v-if="categories.length === 0" class="nav-li nocategory"><a href="javascript:void(0)">暂无分类</a></li>
+          <li v-if="categories.length > 0" v-for="(item, index) in categories" class="nav-li">
+            <a @click.prevent="changeCIndex(index)">{{item.name}}</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
+const ERR_OK = '0'
+
 export default {
-  props: {
-    directoryId: {
-      type: String,
-      // required: true
+  computed: {
+    categories() {
+      if (this.$store.state.list.length > 0) {
+        return this.$store.state.list[this.$store.state.dIndex];
+      }
+      return [];
     }
   },
   data() {
     return {
-
-    }
-  },
-  created() {
-    this.$http.get('/api/categories', {
-      params: {
-        'directoryId': this.directoryId
+      ruleForm: {
+        name: ''
+      },
+      rules: {
+        name: [{
+          required: true,
+          message: '请输入类别名称',
+          trigger: 'blur'
+        }]
       }
-    }).then((res) => {
-      this.categories = res.body.data;
-    })
+    };
+  },
+  methods: {
+    changeCIndex(index) {
+      this.$store.dispatch('changeCIndex', index);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$http.post('/api/admin/category', JSON.stringify({
+            'name': this.ruleForm.name,
+            'directoryId': this.$store.state.list[this.$store.state.dIndex]
+          })).then((res) => {
+            res = res.body;
+            if (res.errno === ERR_OK) {
+              this.category = res.data;
+              console.log(this.category, 'this.category');
+            } else {
+              this.$message.error('请先添加一级目录');
+            }
+          })
+        } else {
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
@@ -136,5 +167,17 @@ export default {
 .nav li.nocategory img {
   vertical-align: middle;
   margin-right: 3px;
+}
+
+.el-form-item {
+  margin-bottom: 0;
+}
+
+.el-form--inline .el-form-item:last-of-type {
+  margin-right: 0;
+}
+
+.input-name {
+  width: 198px;
 }
 </style>

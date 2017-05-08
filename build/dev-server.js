@@ -120,39 +120,30 @@ apiRouters.post('/admin/directory', urlencodedParser, function(req, res) {
 
 // 添加类别
 apiRouters.post('/admin/category', urlencodedParser, function(req, res) {
-  var id = req.body._id
   var categoryObj = req.body
-  var _category
-  if (id) {
-    category.findById(id, function(err, category) {
-      if (err) {
-        console.log(err, '未找到对应ID的栏目')
-      }
-      _category = _.extend(category, categoryObj)
-      _category.save(function(err, category) {
-        if (err) {
-          console.log(err, '更新栏目错误')
-        }
-        res.json({
-          errno: 0,
-          data: category
+  var _category = new Category(categoryObj)
+  var directoryId = categoryObj.directoryId
+
+  _category.save(function(err, category) {
+    if (err) {
+      console.log(err)
+    }
+    if (directoryId) {
+      Directory.findById(directoryId, function(err, directory) {
+        directory.categories.push(category._id)
+        category.save(function(err, category) {
+          res.json({
+            errno: 0,
+            data: category
+          })
         })
       })
-    })
-  } else {
-    _category = new Category({
-      name: categoryObj.name
-    })
-    _category.save(function(err, category) {
-      if (err) {
-        console.log(err, '新增栏目错误')
-      }
+    } else {
       res.json({
-        errno: 0,
-        data: category
+        errno: 1
       })
-    })
-  }
+    }
+  })
 })
 
 // 添加子项
