@@ -2,7 +2,7 @@
   <div class="box-1200">
     <div class="categoryList fn-clear">
       <ul>
-        <li>
+        <li v-if="movies.length===0">
           <a href="javascript:void(0)">
             <div class="nophoto"><img src="./zanwu.jpg" alt=""></div>
             <div class="category-msg" style="display: none;">
@@ -11,102 +11,12 @@
             </div>
           </a>
         </li>
-        <li>
+        <li v-for="(item, index) in movies">
           <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
+            <div class="category-img"><img :src="item.url" alt=""></div>
             <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <div class="category-img"><img src="./list-img.jpg" alt=""></div>
-            <div class="category-msg">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
+              <div class="category-title">{{item.name}}</div>
+              <div class="category-date">{{item.updataAt}}</div>
             </div>
           </a>
         </li>
@@ -116,7 +26,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    movies() {
+      let state = this.$store.state;
+      if (_.size(state.list) && state.list[state.dIndex] && state.list[state.dIndex][state.cIndex]) {
+        return state.list[state.dIndex].categories[state.cIndex].movies;
+      }
+      return [];
+    }
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

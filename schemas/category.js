@@ -34,7 +34,7 @@ CategorySchema.pre('save', function(next) {
 
 CategorySchema.statics = {
 	fetch: function(cb) {
-		return this.find({}).sort('updataAt').exec(cb)
+		return this.find({}).sort('createAt').exec(cb)
 	},
 	findById: function(id, cb) {
 		return this.findOne({_id: id}).exec(cb)

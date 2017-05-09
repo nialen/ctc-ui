@@ -7,6 +7,9 @@ import store from './store'
 import vueResource from 'vue-resource'
 import ElementUI from 'element-ui'
 
+import _ from 'lodash'
+import moment from 'moment'
+
 Vue.use(vueResource)
 Vue.use(ElementUI)
 

@@ -4,7 +4,6 @@
     <router-view></router-view>
   </div>
 </template>
-
 <script>
 import header from '@/components/header/';
 
@@ -15,15 +14,12 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchData');
-    console.log(this.$store.state, 'this.$store.state');
+    this.$store.dispatch('fetchDirectories');
   },
   components: {
     'v-header': header
   }
 }
 </script>
-
 <style>
-
 </style>

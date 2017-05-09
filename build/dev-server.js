@@ -36,37 +36,39 @@ var Movie = require('../models/movie')
 var apiRouters = express.Router()
 
 apiRouters.get('/directories', function(req, res) {
-  Directory
-    .find({})
-    .populate({
-      path: 'categories'
+  Directory.fetch(function(err, directories) {
+    if (err) {
+      console.log(err)
+    }
+    res.json({
+      errno: 0,
+      data: directories
     })
-    .exec(function(err, directories) {
-      if (err) {
-        console.log(err)
-      }
-      res.json({
-        errno: 0,
-        data: directories
-      })
-    })
+  })
 })
 
 apiRouters.get('/categories', function(req, res) {
   var directoryId = req.query.directoryId
-  Category.findById(directoryId, function(err, categories) {
+  Directory.findOne({ _id: directoryId }).populate('categories').exec(function(err, directory) {
+    if (err) {
+      console.log(err)
+    }
     res.json({
       errno: 0,
-      data: categories
+      data: directory.categories
     })
   })
 })
 
 apiRouters.get('/movies', function(req, res) {
-  Movie.fetch(function(err, movies) {
+  var categoryId = req.query.categoryId
+  Category.findOne({ _id: categoryId }).populate('movies').exec(function(err, category) {
+    if (err) {
+      console.log(err)
+    }
     res.json({
       errno: 0,
-      data: movies
+      data: category.movies
     })
   })
 })
@@ -83,39 +85,19 @@ app.get('/detail/:id', function(req, res) {
 
 // 添加栏目
 apiRouters.post('/admin/directory', urlencodedParser, function(req, res) {
-  var id = req.body._id
   var directoryObj = req.body
-  var _directory
-  if (id) {
-    directory.findById(id, function(err, directory) {
-      if (err) {
-        console.log(err, '未找到对应ID的栏目')
-      }
-      _directory = _.extend(directory, directoryObj)
-      _directory.save(function(err, directory) {
-        if (err) {
-          console.log(err, '更新栏目错误')
-        }
-        res.json({
-          errno: 0,
-          data: directory
-        })
-      })
+  var _directory = new Directory({
+    name: directoryObj.name
+  })
+  _directory.save(function(err, directory) {
+    if (err) {
+      console.log(err)
+    }
+    res.json({
+      errno: 0,
+      data: directory
     })
-  } else {
-    _directory = new Directory({
-      name: directoryObj.name
-    })
-    _directory.save(function(err, directory) {
-      if (err) {
-        console.log(err, '新增栏目错误')
-      }
-      res.json({
-        errno: 0,
-        data: directory
-      })
-    })
-  }
+  })
 })
 
 // 添加类别
@@ -130,11 +112,17 @@ apiRouters.post('/admin/category', urlencodedParser, function(req, res) {
     }
     if (directoryId) {
       Directory.findById(directoryId, function(err, directory) {
+        if (err) {
+          console.log(err)
+        }
         directory.categories.push(category._id)
-        category.save(function(err, category) {
+        directory.save(function(err, directory) {
+          if (err) {
+            console.log(err)
+          }
           res.json({
             errno: 0,
-            data: category
+            data: directory.categories
           })
         })
       })
@@ -154,12 +142,12 @@ apiRouters.post('/admin/movie', urlencodedParser, function(req, res) {
   if (id !== 'undefined') {
     Movie.findById(id, function(err, movie) {
       if (err) {
-        console.log(err, '未找到对应ID的信息')
+        console.log(err)
       }
       _movie = _.extend(movie, movieObj)
       _movie.save(function(err, movie) {
         if (err) {
-          console.log(err, '更新信息错误')
+          console.log(err)
         }
         res.redirect('/movie/' + movie._id)
       })
@@ -173,7 +161,7 @@ apiRouters.post('/admin/movie', urlencodedParser, function(req, res) {
     })
     _movie.save(function(err, movie) {
       if (err) {
-        console.log(err, '新增信息错误')
+        console.log(err)
       }
       res.redirect('/movie/' + movie._id)
     })

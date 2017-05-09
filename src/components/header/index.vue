@@ -4,12 +4,12 @@
       <div class="logo"><img src="./logo.png" alt=""></div>
       <div class="menu fn-clear">
         <ul>
-          <li v-if="directories.length>0" v-for="(item, index) in directories" :class="['menu_li', {menu_hover: index===$store.state.dIndex}]">
-            <a @click.prevent="changeDIndex(index)">{{item.name}}</a>
+          <li v-for="item in directories" :class="['menu_li', {menu_hover: directoryId===item._id}]">
+            <a @click.prevent="toggleDirectoryId(item._id)">{{item.name}}</a>
           </li>
           <li v-if="directories.length===0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
           <li v-if="$store.state.role==='admin'" class="addcatalog">
-            <el-popover ref="popover" placement="bottom" width="300" trigger="click">
+            <el-popover ref="popover" placement="bottom" width="300" trigger="click" v-model="visibleForm">
               <el-form :inline="true" :show-message="false" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
                 <el-form-item prop="name">
                   <el-input v-model="ruleForm.name" placeholder="请输入目录名称" class="input-name"></el-input>
@@ -41,11 +41,15 @@ export default {
   },
   computed: {
     directories() {
-      return this.$store.state.list;
+      return this.$store.state.directories;
+    },
+    directoryId() {
+      return this.$store.state.directoryId;
     }
   },
   data() {
     return {
+      visibleForm: false,
       ruleForm: {
         name: ''
       },
@@ -59,8 +63,9 @@ export default {
     };
   },
   methods: {
-    changeDIndex(index) {
-      this.$store.dispatch('changeDIndex', index);
+    toggleDirectoryId(id) {
+      this.$store.dispatch('toggleDirectoryId', id);
+      this.$store.dispatch('fetchCategories');
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -68,8 +73,8 @@ export default {
           this.$http.post('/api/admin/directory', JSON.stringify(this.ruleForm)).then((res) => {
             res = res.body;
             if (res.errno === ERR_OK) {
-              this.directory = res.data;
-              console.log(this.directory, 'this.directory');
+              this.visibleForm = false;
+              this.$store.dispatch('fetchDirectories');
             }
           })
         } else {
@@ -156,6 +161,7 @@ export default {
   line-height: 50px;
   font-size: 16px;
   color: #c6c4c4;
+  cursor: pointer;
 }
 
 .menu_li:hover a,

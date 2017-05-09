@@ -5,7 +5,7 @@
       <div class="nav fn-clear">
         <ul>
           <li v-if="$store.state.role==='admin'" class="nav-li nocategory">
-            <el-popover ref="popover" placement="bottom" width="300" trigger="click">
+            <el-popover ref="popover" placement="bottom" width="300" trigger="click" v-model="visibleForm">
               <el-form :inline="true" :show-message="false" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
                 <el-form-item prop="name">
                   <el-input v-model="ruleForm.name" placeholder="请输入分类名称" class="input-name"></el-input>
@@ -15,11 +15,11 @@
                 </el-form-item>
               </el-form>
             </el-popover>
-            <a v-popover:popover href="javascript:void(0)"><img src="./addclass.png" alt="">添加分类</a>
+            <span v-popover:popover><img src="./addclass.png" alt="">添加分类</span>
           </li>
-          <li v-if="categories.length === 0" class="nav-li nocategory"><a href="javascript:void(0)">暂无分类</a></li>
-          <li v-if="categories.length > 0" v-for="(item, index) in categories" class="nav-li">
-            <a @click.prevent="changeCIndex(index)">{{item.name}}</a>
+          <li v-if="categroies.length===0" class="nav-li nocategory"><span>暂无分类</span></li>
+          <li v-for="item in categroies" @click.prevent="toggleCategoryId(item._id)" :class="['nav-li', {'nav-li-select': categoryId===item._id}]">
+            <span>{{item.name}}</span>
           </li>
         </ul>
       </div>
@@ -27,19 +27,20 @@
   </div>
 </template>
 <script>
-const ERR_OK = '0'
+const ERR_OK = 0;
 
 export default {
   computed: {
-    categories() {
-      if (this.$store.state.list.length > 0) {
-        return this.$store.state.list[this.$store.state.dIndex];
-      }
-      return [];
+    categroies() {
+      return this.$store.state.categroies;
+    },
+    categoryId() {
+      return this.$store.state.categoryId;
     }
   },
   data() {
     return {
+      visibleForm: false,
       ruleForm: {
         name: ''
       },
@@ -50,25 +51,29 @@ export default {
           trigger: 'blur'
         }]
       }
-    };
+    }
   },
   methods: {
-    changeCIndex(index) {
-      this.$store.dispatch('changeCIndex', index);
+    toggleCategoryId(id) {
+      this.$store.dispatch('toggleCategoryId', id);
+      this.$store.dispatch('fetchMovies');
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$http.post('/api/admin/category', JSON.stringify({
             'name': this.ruleForm.name,
-            'directoryId': this.$store.state.list[this.$store.state.dIndex]
+            'directoryId': this.$store.state.directoryId
           })).then((res) => {
             res = res.body;
             if (res.errno === ERR_OK) {
-              this.category = res.data;
-              console.log(this.category, 'this.category');
+              this.visibleForm = false;
+              this.$store.dispatch('fetchCategories');
             } else {
-              this.$message.error('请先添加一级目录');
+              this.$message.error({
+                message: '请先添加一级目录',
+                duration: 1000
+              });
             }
           })
         } else {
@@ -79,6 +84,7 @@ export default {
   }
 };
 </script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .nav-box {
@@ -133,9 +139,10 @@ export default {
   background: #e9e9e9;
   font-size: 14px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-.nav li.nav-li a {
+.nav li.nav-li span {
   color: #5d5d5d;
 }
 
@@ -144,7 +151,7 @@ export default {
   border: 1px solid #fa4f94;
 }
 
-.nav li.nav-li-select a {
+.nav li.nav-li-select span {
   color: #fff;
 }
 
