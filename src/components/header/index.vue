@@ -148,8 +148,7 @@ export default {
 }
 
 .menu_li:hover,
-.menu_hover,
-.notAvailable {
+.menu_hover {
   border-bottom: 2px solid #f33d7d;
 }
 

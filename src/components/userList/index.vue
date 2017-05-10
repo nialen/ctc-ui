@@ -3,15 +3,9 @@
     <div class="categoryList fn-clear">
       <ul>
         <li v-if="movies.length===0">
-          <a href="javascript:void(0)">
-            <div class="nophoto"><img src="./zanwu.jpg" alt=""></div>
-            <div class="category-msg" style="display: none;">
-              <div class="category-title">卖乐多</div>
-              <div class="category-date">2015-10-02</div>
-            </div>
-          </a>
+          <div class="nophoto" @click="dialogFormVisible = true"><img src="./zanwu.jpg" alt=""></div>
         </li>
-        <li v-for="(item, index) in movies">
+        <li v-for="item in movies">
           <a href="javascript:void(0)">
             <div class="category-img"><img :src="item.url" alt=""></div>
             <div class="category-msg">
@@ -22,23 +16,88 @@
         </li>
       </ul>
     </div>
+    <el-dialog title="添加图片" :visible.sync="dialogFormVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+        <el-form-item label="图片标题：" prop="name">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="图片路径：" prop="name">
+          <el-input v-model="ruleForm.url"></el-input>
+        </el-form-item>
+        <el-form-item label="所属一级目录：" prop="region">
+          <el-select v-model="ruleForm.directory" clearable placeholder="请选择一级目录">
+            <el-option v-for="item in $store.state.directories" :key="item._id" :label="item.name" :value="item._id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属二级目录：" prop="region">
+          <el-select v-model="ruleForm.category" clearable placeholder="请选择二级目录">
+            <el-option v-for="item in $store.state.categories" :key="item._id" :label="item.name" :value="item._id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-
 <script>
 export default {
-  computed: {
-    movies() {
-      let state = this.$store.state;
-      if (_.size(state.list) && state.list[state.dIndex] && state.list[state.dIndex][state.cIndex]) {
-        return state.list[state.dIndex].categories[state.cIndex].movies;
+  data() {
+      return {
+        dialogFormVisible: false,
+        ruleForm: {
+          name: '',
+          url: '',
+          directory: '',
+          category: ''
+        },
+        rules: {
+          name: [{
+            required: true,
+            message: '请填写图片标题',
+            trigger: 'blur'
+          }, {
+            validator: (rule, value, callback) => {
+              if (value) {
+                var regular = /\s+/g
+                if (regular.test(value)) {
+                  callback(new Error('图片标题不能包含空格'));
+                }
+              } else {
+                callback();
+              }
+            },
+            trigger: 'blur'
+          }],
+          url: [{
+            required: true,
+            message: '请填写图片路径',
+            trigger: 'change'
+          }],
+          directory: [{
+            required: true,
+            message: '请选择一级目录',
+            trigger: 'change'
+          }],
+          category: [{
+            required: true,
+            message: '请选择二级目录',
+            trigger: 'change'
+          }]
+        }
       }
-      return [];
+    },
+    computed: {
+      movies() {
+        return this.$store.state.movies;
+      }
     }
-  }
 };
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .categoryList {
@@ -68,6 +127,7 @@ export default {
   border: 1px dashed #d2d2d2;
   margin: auto;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .nophoto img {
