@@ -17,9 +17,9 @@
             </el-popover>
             <span v-popover:popover><img src="./addclass.png" alt="">添加分类</span>
           </li>
-          <li v-if="categories.length===0" class="nav-li nocategory"><span>暂无分类</span></li>
+          <li v-if="categories.length===0" class="nav-li nocategory">暂无分类</li>
           <li v-for="item in categories" @click.prevent="toggleCategoryId(item._id)" :class="['nav-li', {'nav-li-select': categoryId===item._id}]">
-            <span>{{item.name}}</span>
+            <router-link to="/user/list">{{item.name}}</router-link>
           </li>
         </ul>
       </div>
@@ -140,10 +140,11 @@ export default {
   background: #e9e9e9;
   font-size: 14px;
   border-radius: 5px;
+  color: #5d5d5d;
   cursor: pointer;
 }
 
-.nav li.nav-li span {
+.nav li.nav-li a {
   color: #5d5d5d;
 }
 
@@ -152,7 +153,7 @@ export default {
   border: 1px solid #fa4f94;
 }
 
-.nav li.nav-li-select span {
+.nav li.nav-li-select a {
   color: #fff;
 }
 

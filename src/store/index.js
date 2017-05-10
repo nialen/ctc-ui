@@ -7,10 +7,10 @@ const store = new Vuex.Store({
     role: 'admin', // 角色
     directoryId: '', // 当前目录ID
     categoryId: '', // 当前类别ID
-    movieId: '', // 当前movie ID
     directories: [], // 目录列表
     categories: [], // 类别列表
-    movies: [] // movie列表
+    movies: [], // movie列表
+    movie: null // 展示详情
   },
   getters: {},
   mutations: {
@@ -29,6 +29,9 @@ const store = new Vuex.Store({
     },
     FETCH_MOVIES(state, arr) {
       state.movies = arr;
+    },
+    FETCH_DETAIL(state, obj) {
+      state.movie = obj;
     }
   },
   actions: {
@@ -89,6 +92,15 @@ const store = new Vuex.Store({
         }
       }).then(res => {
         commit("FETCH_MOVIES", res.body.data);
+      })
+    },
+    fetchDetail({ commit }, id) {
+      Vue.http.get('/api/detail', {
+        params: {
+          moiveId: id
+        }
+      }).then(res => {
+        commit("FETCH_DETAIL", res.body.data);
       })
     }
   },

@@ -74,10 +74,12 @@ apiRouters.get('/movies', function(req, res) {
 })
 
 // 详情
-app.get('/detail/:id', function(req, res) {
-  var id = req.params.id
-  Movie.findById(id, function(err, movie) {
+// TODO 获取不到数据
+apiRouters.get('/detail', function(req, res) {
+  var movieId = req.query.movieId
+  Movie.findById(movieId, function(err, movie) {
     res.json({
+      errno: 0,
       movie: movie
     })
   })

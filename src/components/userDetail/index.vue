@@ -2,18 +2,29 @@
   <div class="box-1200">
     <div class="classDetail-box">
       <div class="classDetail">
-        <div class="detail-title">卖乐多</div>
-        <div class="detail-time"><img src="./icon-time.jpg" alt="">2017-02-20</div>
-        <div class="detail-img"><img src="./detail-img.jpg" alt=""></div>
+        <div class="detail-title">{{movie.name}}</div>
+        <div class="detail-time"><img src="./icon-time.jpg" alt="">{{moment(movie.updataAt).format('YYYY-MM-DD')}}</div>
+        <div class="detail-img"><img :src="movie.url" alt=""></div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      movie: this.$store.state.movie
+    }
+  },
+  created() {
+    var movieId = this.$route.query.movieId;
+    this.$store.dispatch('fetchDetail', movieId);
+  },
+  beforeUpdate() {
+    this.movie = this.$store.state.movie;
+  }
+}
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .classDetail-box {
@@ -58,8 +69,7 @@ export default {}
 }
 
 .detail-img img {
-  max-width: 100%;
-  width: auto;
+  min-width: 100%;
   height: auto;
 }
 </style>

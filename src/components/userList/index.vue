@@ -9,13 +9,13 @@
           <div class="nophoto"><img src="./zanwu.jpg" alt=""></div>
         </li>
         <li v-for="item in movies">
-          <a href="javascript:void(0)">
+          <router-link :to="{path: '/user/detail', query: {movieId: item._id}}">
             <div class="category-img"><img :src="item.url" alt=""></div>
             <div class="category-msg">
               <div class="category-title">{{item.name}}</div>
               <div class="category-date">{{moment(item.createAt).format('YYYY-MM-DD')}}</div>
             </div>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
