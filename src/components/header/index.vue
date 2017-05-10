@@ -4,10 +4,6 @@
       <div class="logo"><img src="./logo.png" alt=""></div>
       <div class="menu fn-clear">
         <ul>
-          <li v-for="item in directories" :class="['menu_li', {menu_hover: directoryId===item._id}]">
-            <a @click.prevent="toggleDirectoryId(item._id)">{{item.name}}</a>
-          </li>
-          <li v-if="directories.length===0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
           <li v-if="$store.state.role==='admin'" class="addcatalog">
             <el-popover ref="popover" placement="bottom" width="300" trigger="click" v-model="visibleForm">
               <el-form :inline="true" :show-message="false" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
@@ -20,6 +16,10 @@
               </el-form>
             </el-popover>
             <a v-popover:popover href="javascript:void(0)"><img src="./addcatalog.png" alt="">添加目录</a>
+          </li>
+          <li v-if="directories.length===0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
+          <li v-for="item in directories" :class="['menu_li', {menu_hover: directoryId===item._id}]">
+            <a @click.prevent="toggleDirectoryId(item._id)">{{item.name}}</a>
           </li>
         </ul>
       </div>
@@ -73,6 +73,7 @@ export default {
           this.$http.post('/api/admin/directory', JSON.stringify(this.ruleForm)).then((res) => {
             res = res.body;
             if (res.errno === ERR_OK) {
+              this.$refs[formName].resetFields();
               this.visibleForm = false;
               this.$store.dispatch('fetchDirectories');
             }

@@ -9,7 +9,7 @@ const store = new Vuex.Store({
     categoryId: '', // 当前类别ID
     movieId: '', // 当前movie ID
     directories: [], // 目录列表
-    categroies: [], // 类别列表
+    categories: [], // 类别列表
     movies: [] // movie列表
   },
   getters: {},
@@ -24,8 +24,8 @@ const store = new Vuex.Store({
     FETCH_DIRECTORIES(state, arr) {
       state.directories = arr;
     },
-    FETCH_CATEGROIES(state, arr) {
-      state.categroies = arr;
+    FETCH_CATEGORIES(state, arr) {
+      state.categories = arr;
     },
     FETCH_MOVIES(state, arr) {
       state.movies = arr;
@@ -47,13 +47,15 @@ const store = new Vuex.Store({
             directoryId: state.directoryId
           }
         }).then(res => {
-          commit("FETCH_CATEGROIES", res.body.data);
+          commit("FETCH_CATEGORIES", res.body.data);
           commit('TOGGLE_CATEGORY_ID', res.body.data[0]._id);
           Vue.http.get('/api/movies', {
             params: {
               categoryId: state.categoryId
             }
-          }).then(res => {})
+          }).then(res => {
+            commit("FETCH_MOVIES", res.body.data);
+          })
         })
       })
     },
@@ -63,13 +65,21 @@ const store = new Vuex.Store({
           directoryId: state.directoryId
         }
       }).then(res => {
-        commit("FETCH_CATEGROIES", res.body.data);
-        commit('TOGGLE_CATEGORY_ID', res.body.data[0]._id);
-        Vue.http.get('/api/movies', {
-          params: {
-            categoryId: state.categoryId
-          }
-        }).then(res => {})
+        if (_.size(res.body.data)) {
+          commit("FETCH_CATEGORIES", res.body.data);
+          commit('TOGGLE_CATEGORY_ID', res.body.data[0]._id);
+          Vue.http.get('/api/movies', {
+            params: {
+              categoryId: state.categoryId
+            }
+          }).then(res => {
+            commit("FETCH_MOVIES", res.body.data);
+          })
+        } else {
+          commit("FETCH_CATEGORIES", []);
+          commit('TOGGLE_CATEGORY_ID', '');
+          commit("FETCH_MOVIES", []);
+        }
       })
     },
     fetchMovies({ commit, state }) {
@@ -77,7 +87,9 @@ const store = new Vuex.Store({
         params: {
           categoryId: state.categoryId
         }
-      }).then(res => {})
+      }).then(res => {
+        commit("FETCH_MOVIES", res.body.data);
+      })
     }
   },
   modules: {}

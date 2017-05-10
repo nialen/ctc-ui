@@ -17,8 +17,8 @@
             </el-popover>
             <span v-popover:popover><img src="./addclass.png" alt="">添加分类</span>
           </li>
-          <li v-if="categroies.length===0" class="nav-li nocategory"><span>暂无分类</span></li>
-          <li v-for="item in categroies" @click.prevent="toggleCategoryId(item._id)" :class="['nav-li', {'nav-li-select': categoryId===item._id}]">
+          <li v-if="categories.length===0" class="nav-li nocategory"><span>暂无分类</span></li>
+          <li v-for="item in categories" @click.prevent="toggleCategoryId(item._id)" :class="['nav-li', {'nav-li-select': categoryId===item._id}]">
             <span>{{item.name}}</span>
           </li>
         </ul>
@@ -31,8 +31,8 @@ const ERR_OK = 0;
 
 export default {
   computed: {
-    categroies() {
-      return this.$store.state.categroies;
+    categories() {
+      return this.$store.state.categories;
     },
     categoryId() {
       return this.$store.state.categoryId;
@@ -63,10 +63,11 @@ export default {
         if (valid) {
           this.$http.post('/api/admin/category', JSON.stringify({
             'name': this.ruleForm.name,
-            'directoryId': this.$store.state.directoryId
+            'directory': this.$store.state.directoryId
           })).then((res) => {
             res = res.body;
             if (res.errno === ERR_OK) {
+              this.$refs[formName].resetFields();
               this.visibleForm = false;
               this.$store.dispatch('fetchCategories');
             } else {

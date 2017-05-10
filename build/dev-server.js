@@ -104,7 +104,7 @@ apiRouters.post('/admin/directory', urlencodedParser, function(req, res) {
 apiRouters.post('/admin/category', urlencodedParser, function(req, res) {
   var categoryObj = req.body
   var _category = new Category(categoryObj)
-  var directoryId = categoryObj.directoryId
+  var directoryId = categoryObj.directory
 
   _category.save(function(err, category) {
     if (err) {
@@ -136,36 +136,36 @@ apiRouters.post('/admin/category', urlencodedParser, function(req, res) {
 
 // 添加子项
 apiRouters.post('/admin/movie', urlencodedParser, function(req, res) {
-  var id = req.body._id
   var movieObj = req.body
-  var _movie
-  if (id !== 'undefined') {
-    Movie.findById(id, function(err, movie) {
-      if (err) {
-        console.log(err)
-      }
-      _movie = _.extend(movie, movieObj)
-      _movie.save(function(err, movie) {
+  var _movie = new Movie(movieObj)
+  var categoryId = movieObj.category
+
+  _movie.save(function(err, movie) {
+    if (err) {
+      console.log(err)
+    }
+    if (categoryId) {
+      Category.findById(categoryId, function(err, category) {
         if (err) {
           console.log(err)
         }
-        res.redirect('/movie/' + movie._id)
+        category.movies.push(movie._id)
+        category.save(function(err, category) {
+          if (err) {
+            console.log(err)
+          }
+          res.json({
+            errno: 0,
+            data: category.movies
+          })
+        })
       })
-    })
-  } else {
-    _movie = new Movie({
-      catalog: movieObj.catalog,
-      category: movieObj.category,
-      name: movieObj.name,
-      url: movieObj.url
-    })
-    _movie.save(function(err, movie) {
-      if (err) {
-        console.log(err)
-      }
-      res.redirect('/movie/' + movie._id)
-    })
-  }
+    } else {
+      res.json({
+        errno: 1
+      })
+    }
+  })
 })
 
 app.use('/api', apiRouters)

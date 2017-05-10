@@ -9,6 +9,7 @@ import ElementUI from 'element-ui'
 
 import _ from 'lodash'
 import moment from 'moment'
+Vue.prototype.moment = moment
 
 Vue.use(vueResource)
 Vue.use(ElementUI)
