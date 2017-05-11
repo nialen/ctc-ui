@@ -97,7 +97,7 @@ const store = new Vuex.Store({
     fetchDetail({ commit }, id) {
       Vue.http.get('/api/detail', {
         params: {
-          moiveId: id
+          movieId: id
         }
       }).then(res => {
         commit("FETCH_DETAIL", res.body.data);

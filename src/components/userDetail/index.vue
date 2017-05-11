@@ -3,28 +3,37 @@
     <div class="classDetail-box">
       <div class="classDetail">
         <div class="detail-title">{{movie.name}}</div>
-        <div class="detail-time"><img src="./icon-time.jpg" alt="">{{moment(movie.updataAt).format('YYYY-MM-DD')}}</div>
+        <div class="detail-time"><img src="./icon-time.jpg" alt="">{{moment(movie.updateAt).format('YYYY-MM-DD')}}</div>
         <div class="detail-img"><img :src="movie.url" alt=""></div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+const ERR_OK =0;
 export default {
   data() {
     return {
-      movie: this.$store.state.movie
+      movie: {}
     }
   },
   created() {
     var movieId = this.$route.query.movieId;
-    this.$store.dispatch('fetchDetail', movieId);
-  },
-  beforeUpdate() {
-    this.movie = this.$store.state.movie;
+    this.$http.get('/api/detail', {
+      params: {
+        movieId: movieId
+      }
+    }).then(res => {
+      res = res.body
+      if (res.errno === ERR_OK) {
+        this.movie = res.movie;
+      }
+    })
   }
 }
 </script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .classDetail-box {

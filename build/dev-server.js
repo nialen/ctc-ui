@@ -74,7 +74,6 @@ apiRouters.get('/movies', function(req, res) {
 })
 
 // 详情
-// TODO 获取不到数据
 apiRouters.get('/detail', function(req, res) {
   var movieId = req.query.movieId
   Movie.findById(movieId, function(err, movie) {

@@ -17,7 +17,7 @@ var MovieSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  updataAt: {
+  updateAt: {
     type: Date,
     default: Date.now()
   }
@@ -25,9 +25,9 @@ var MovieSchema = new Schema({
 
 MovieSchema.pre('save', function(next) {
 	if (this.isNew) {
-		this.createAt = this.updataAt = Date.now()
+		this.createAt = this.updateAt = Date.now()
 	} else {
-		this.updataAt = Date.now()
+		this.updateAt = Date.now()
 	}
 
 	next()
@@ -35,7 +35,7 @@ MovieSchema.pre('save', function(next) {
 
 MovieSchema.statics = {
 	fetch: function(cb) {
-		return this.find({}).sort('updataAt').exec(cb)
+		return this.find({}).sort('updateAt').exec(cb)
 	},
 	findById: function(id, cb) {
 		return this.findOne({_id: id}).exec(cb)

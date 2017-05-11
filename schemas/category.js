@@ -16,7 +16,7 @@ var CategorySchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  updataAt: {
+  updateAt: {
     type: Date,
     default: Date.now()
   }
@@ -24,9 +24,9 @@ var CategorySchema = new Schema({
 
 CategorySchema.pre('save', function(next) {
 	if (this.isNew) {
-		this.createAt = this.updataAt = Date.now()
+		this.createAt = this.updateAt = Date.now()
 	} else {
-		this.updataAt = Date.now()
+		this.updateAt = Date.now()
 	}
 
 	next()
