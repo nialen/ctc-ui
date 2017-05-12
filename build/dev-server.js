@@ -49,15 +49,22 @@ apiRouters.get('/directories', function(req, res) {
 
 apiRouters.get('/categories', function(req, res) {
   var directoryId = req.query.directoryId
-  Directory.findOne({ _id: directoryId }).populate('categories').exec(function(err, directory) {
-    if (err) {
-      console.log(err)
-    }
+  if (directoryId) {
+    Directory.findOne({ _id: directoryId }).populate('categories').exec(function(err, directory) {
+      if (err) {
+        console.log(err)
+      }
+      res.json({
+        errno: 0,
+        data: directory.categories
+      })
+    })
+  } else {
     res.json({
       errno: 0,
-      data: directory.categories
+      data: []
     })
-  })
+  }
 })
 
 apiRouters.get('/movies', function(req, res) {

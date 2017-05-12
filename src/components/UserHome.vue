@@ -8,48 +8,6 @@
 import category from '@/components/category/';
 
 export default {
-  data() {
-    return {
-
-    }
-  },
-  created() {
-    // this.$http.get('/api/categories').then((res) => {
-    //   this.categories = res.body.data;
-    // })
-  },
-  methods: {
-    addDirectory() {
-      // var param = {
-      //   name: '元素'
-      // };
-      // this.$http.post('/api/admin/directory', JSON.stringify(param)).then((res) => {
-      //     this.directory = res.body.data;
-      //     console.log(this.directory, 'this.directory');
-      // })
-    },
-    addCategory() {
-      // var param = {
-      //   name: '公共头部'
-      // };
-      // this.$http.post('/api/admin/category', JSON.stringify(param)).then((res) => {
-      //     this.category = res.body.data;
-      //     console.log(this.category, 'this.category');
-      // })
-    },
-    addMovie() {
-      var param = {
-        catalog: '元素',
-        category: '布局',
-        name: '卖乐多',
-        url: 'http://img.w3cschool.cn/attachments/image/20160910/1473476960662589.gif'
-      };
-      this.$http.post('/api/admin/movie', JSON.stringify(param)).then((res) => {
-          this.movie = res.body.data;
-          console.log(this.movie, 'this.movie');
-      })
-    }
-  },
   components: {
     'v-category': category
   }

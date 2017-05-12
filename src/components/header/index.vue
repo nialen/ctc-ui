@@ -19,12 +19,12 @@
           </li>
           <li v-if="directories.length===0" class="notAvailable"><a href="javascript:void(0)">暂无目录</a></li>
           <li v-for="item in directories" :class="['menu_li', {menu_hover: directoryId===item._id}]">
-            <a @click.prevent="toggleDirectoryId(item._id)">{{item.name}}</a>
+            <router-link to="/user/list" @click.native="toggleDirectoryId(item._id)">{{item.name}}</router-link>
           </li>
         </ul>
       </div>
       <div v-if="$store.state.role==='admin'" class="admin-center">
-        <router-link to="/" class="btn-admin">管理中心</router-link>
+        <router-link to="/center" @click.native="toggleDirectoryId('')" class="btn-admin">管理中心</router-link>
       </div>
     </div>
   </div>
