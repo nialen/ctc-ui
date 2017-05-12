@@ -1,10 +1,10 @@
 <template>
   <div class="menu-bar">
-    <div class="menu-tit"><i class="iconfont">&#xe694;</i>菜单管理</div>
+    <div class="menu-tit">菜单管理</div>
     <div class="addItem">
-      <button class="btn add-btn"><i class="iconfont">&#xe60e;</i> 添加分类</button>
+      <button class="btn add-btn"><i class="el-icon-plus"></i> 添加分类</button>
       <div class="search">
-        <input type="text" placeholder="输入分类名称搜索"><button class="search-btn">查询</button>
+        <el-input class="search-input" placeholder="输入分类名称搜索"></el-input><el-button class="search-btn">查询</el-button>
       </div>
     </div>
     <div class="menu-cent">
@@ -39,46 +39,6 @@
             </li>
           </ul>
         </div>
-        <div class="listfor">
-          <span class="numlist">02</span>
-          <ul class="itemlist">
-            <li>
-              <span class="item-catalog">一级目录：</span>
-              <div class="catalog-list">
-                <label class="checkboxclass"><input type="checkbox" name=""><span class="bold">UI</span></label>
-              </div>
-            </li>
-            <li>
-              <span class="item-catalog">二级目录：</span>
-              <div class="catalog-list fn-clear">
-                <label class="checkboxclass"><input type="checkbox" name=""><span>系统界面</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>APP</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>网页设计</span></label>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="listfor">
-          <span class="numlist">03</span>
-          <ul class="itemlist">
-            <li>
-              <span class="item-catalog">一级目录：</span>
-              <div class="catalog-list">
-                <label class="checkboxclass"><input type="checkbox" name=""><span class="bold">业务模块</span></label>
-              </div>
-            </li>
-            <li>
-              <span class="item-catalog">二级目录：</span>
-              <div class="catalog-list fn-clear">
-                <label class="checkboxclass"><input type="checkbox" name=""><span>注册</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>登录</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>零售收银</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>调拨出入库</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>商户注册</span></label>
-              </div>
-            </li>
-          </ul>
-        </div>
       </div>
       <div class="btns">
         <button class="btn delete-btn">删除</button>
@@ -93,12 +53,13 @@ export default {}
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .menu-bar {
+  width: 1006px;
   padding: 0 8px;
 }
 
 .menu-tit {
   height: 42px;
-  width: 100%;
+  padding-left: 14px;
   line-height: 42px;
   font-size: 16px;
   color: #363636;
@@ -113,14 +74,13 @@ export default {}
 }
 
 .addItem {
-  width: 100%;
   height: 62px;
   position: relative;
 }
 
 .btn {
   width: 104px;
-  height: 32px;
+  height: 36px;
   background: #ffe3ee;
   border: 1px solid #f279aa;
   font-size: 14px;
@@ -135,7 +95,7 @@ export default {}
 }
 
 .addItem .add-btn i {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .addItem .search {
@@ -144,32 +104,25 @@ export default {}
   top: 14px;
 }
 
-.addItem .search input[type=text] {
+.addItem .search-input {
   width: 335px;
-  height: 22px;
-  border: 1px solid #d3d3d3;
-  border-radius: 4px;
-  padding: 5px 10px;
-  outline: none;
 }
 
 .addItem .search .search-btn {
   width: 106px;
-  height: 34px;
   margin-left: 6px;
   color: #fff;
-  font-size: 16px;
   background: #fa4f94;
   border-radius: 4px;
-  border: 0;
+  border-color: #fa4f94;
 }
 
 .menu-cent {
+  width: 978px;
   min-height: 125px;
   margin: 0 auto;
   border: 1px solid #dfe8ed;
   background: #f8fcfe;
-  margin: 0 14px;
   border-radius: 4px;
 }
 
@@ -189,11 +142,6 @@ export default {}
   text-indent: 15px;
 }
 
-.menu-cent .lists {
-  margin: 0 16px;
-  border-bottom: 1px solid #dfe8ed;
-}
-
 .menu-cent .listfor {
   padding: 14px 0;
   display: flex;
@@ -201,7 +149,8 @@ export default {}
 }
 
 .menu-cent .listfor .numlist {
-  width: 84px;
+  display: inline-block;
+  width: 100px;
   color: #8b969c;
   font-size: 40px;
   font-weight: bold;
@@ -224,8 +173,8 @@ export default {}
 }
 
 .menu-cent .itemlist .catalog-list {
-  width: 772px;
   display: inline-block;
+  width: 748px;
   margin-left: 10px;
 }
 
@@ -274,10 +223,10 @@ export default {}
 }
 
 .menu-cent .btns {
-  margin: 10px 0 42px 86px;
+  margin: 10px 0 42px 100px;
 }
 
 .menu-cent .btns .delete-btn {
-  margin-right: 24px;
+  margin-right: 20px;
 }
 </style>

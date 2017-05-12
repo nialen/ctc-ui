@@ -1,6 +1,6 @@
 <template>
   <div class="menu-bar">
-    <div class="menu-tit"><i class="iconfont">&#xe694;</i>UI库管理</div>
+    <div class="menu-tit">UI库管理</div>
     <div class="search-kug">
       <div class="kug-name">
         <label class="wrdsleft">名称：</label>
@@ -75,7 +75,7 @@ export default {}
 
 .menu-tit {
   height: 42px;
-  width: 100%;
+  padding-left: 14px;
   line-height: 42px;
   font-size: 16px;
   color: #363636;
@@ -185,7 +185,6 @@ export default {}
 }
 
 .tab table {
-  width: 100%;
   font-size: 14px;
 }
 
