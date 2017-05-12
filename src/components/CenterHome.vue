@@ -65,6 +65,7 @@ export default {
 
 .item-list li.on {
   color: #f33d7d;
+  font-weight: 800;
   background: #e7e7e7;
 }
 

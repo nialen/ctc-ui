@@ -173,7 +173,7 @@ export default {
 
 .menu-tit {
   height: 42px;
-  width: 100%;
+  padding-left: 14px;
   line-height: 42px;
   font-size: 16px;
   color: #363636;
@@ -228,9 +228,11 @@ export default {
 .kug-name {
   margin: 10px 0 0 19px;
   line-height: 34px;
+  font-size:14px;
 }
 .kug-name .el-input{
   width: 240px;
+  font-size:14px;
 }
 .kug-name .el-input .el-input__inner {
   border: 1px solid #d3d3d3;
@@ -282,17 +284,17 @@ export default {
   margin-top: 50px;
 }
 
-/*.tab table {
-  width: 100%;
+.tab table {
   font-size: 14px;
 }
-
+/*.tab table {
+  width: 100%;
+}
 .tab table thead th {
   background: #ef4e86;
   height: 36px;
   color: #fff;
 }
-
 .tab table tbody td {
   border: 1px solid #dfe8ed;
   border-left: 0;
