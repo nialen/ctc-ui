@@ -53,7 +53,6 @@ export default {}
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .menu-bar {
-  width: 1006px;
   padding: 0 8px;
 }
 
