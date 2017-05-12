@@ -30,7 +30,7 @@ DirectorySchema.pre('save', function(next) {
 
 DirectorySchema.statics = {
   fetch: function(cb) {
-    return this.find({}).sort('createAt').exec(cb)
+    return this.find({}).populate('categories').sort('createAt').exec(cb)
   },
   findById: function(id, cb) {
     return this.findOne({_id: id}).exec(cb)

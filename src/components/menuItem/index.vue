@@ -121,7 +121,6 @@ export default {
 
 .menu-tit {
   height: 42px;
-  padding-left: 14px;
   line-height: 42px;
   font-size: 16px;
   color: #363636;

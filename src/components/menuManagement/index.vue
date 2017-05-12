@@ -11,30 +11,19 @@
       <p class="none" style="display: none">暂无菜单，请添加分类！</p>
       <p class="remind">注：删除一级分类，所属的子分类一起删除。</p>
       <div class="lists">
-        <div class="listfor">
-          <span class="numlist">01</span>
+        <div class="listfor" v-for="(item, index) in directories">
+          <span class="numlist">{{(index + 1).toString().replace(/^(\d)$/, "0$1")}}</span>
           <ul class="itemlist">
             <li>
               <span class="item-catalog">一级目录：</span>
               <div class="catalog-list">
-                <label class="checkboxclass"><input type="checkbox" name=""><span class="bold">元素</span></label>
+                <label class="checkboxclass"><input type="checkbox" name=""><span class="bold">{{item.name}}</span></label>
               </div>
             </li>
             <li>
               <span class="item-catalog">二级目录：</span>
               <div class="catalog-list fn-clear">
-                <label class="checkboxclass"><input type="checkbox" name=""><span>布局</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>公共头部</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>菜单目录</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>Tab</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>工具栏</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>表格</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>表单</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>搜索</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>翻页</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>图表</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>步骤</span></label>
-                <label class="checkboxclass"><input type="checkbox" name=""><span>导航</span></label>
+                <label v-for="sub in item.categories" class="checkboxclass"><input type="checkbox"><span>{{sub.name}}</span></label>
               </div>
             </li>
           </ul>
@@ -48,7 +37,13 @@
   </div>
 </template>
 <script>
-export default {}
+export default {
+  computed: {
+    directories() {
+      return this.$store.state.directories;
+    }
+  }
+}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -58,7 +53,6 @@ export default {}
 
 .menu-tit {
   height: 42px;
-  padding-left: 14px;
   line-height: 42px;
   font-size: 16px;
   color: #363636;
