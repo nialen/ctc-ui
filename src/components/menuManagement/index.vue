@@ -1,6 +1,6 @@
 <template>
   <div class="menu-bar">
-    <div class="menu-tit">菜单管理</div>
+    <div class="menu-tit"><img src="./icon_menu.png">菜单管理</div>
     <div class="addItem">
       <button class="btn add-btn"><i class="el-icon-plus"></i> 添加分类</button>
       <div class="search">
@@ -61,11 +61,9 @@ export default {
   border-bottom: 1px solid #d9d9d9;
 }
 
-.menu-tit i {
-  color: #f74894;
-  font-size: 20px;
-  vertical-align: top;
-  margin-right: 3px;
+.menu-tit img {
+  vertical-align: middle;
+  margin:-2px 3px 0 0;
 }
 
 .addItem {

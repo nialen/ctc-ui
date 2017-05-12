@@ -1,28 +1,34 @@
 <template>
   <div class="menu-bar">
-    <div class="menu-tit">UI库管理</div>
+    <div class="menu-tit"><img src="./icon_menu.png">UI库管理</div>
     <div class="search-kug">
       <div class="kug-name">
         <label class="wrdsleft">名称：</label>
-        <input type="text" name="" placeholder="输入图库名称搜索">
+        <el-input v-model="input" placeholder="输入图库名称搜索"></el-input>
       </div>
       <div class="kug-category">
         <label class="wrdsleft">一级分类：</label>
-        <select name="" id="">
-          <option>全部</option>
-        </select>
+        <template>
+          <el-select v-model="value" placeholder="全部">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </template>
       </div>
       <div class="kug-category">
         <label class="wrdsleft">二级分类：</label>
-        <select name="" id="">
-          <option>全部</option>
-        </select>
+        <template>
+          <el-select v-model="value" placeholder="全部">
+            <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </template>
       </div>
-      <button class="search-btn">查询</button>
+      <el-button type="primary" class="search-btn">查询</el-button>
     </div>
     <div class="btns">
-      <button class="btn add-btn"><i class="iconfont">&#xe60e;</i> 上传图片</button>
-      <button class="btn delete-btn">批量删除</button>
+      <el-button type="primary" icon="plus">上传图片</el-button>
+      <el-button type="primary">批量删除</el-button>
     </div>
     <div class="menu-cent" style="display: none">
       <p class="none">暂无菜单，请添加分类！</p>
@@ -55,8 +61,8 @@
             <td>布局</td>
             <td>2017-02-02</td>
             <td>
-              <button class="del-btn"><i class="el-icon-delete"></i></button>
-              <button class="check-btn"><i class="el-icon-view"></i></button>
+              <el-button type="primary" icon="delete" class="del-btn"></el-button>
+              <el-button type="primary" icon="view" class="check-btn"></el-button>
             </td>
           </tr>
         </tbody>
@@ -65,7 +71,77 @@
   </div>
 </template>
 <script>
-export default {}
+export default {
+    data() {
+      return {
+        input: '',
+        value:'',
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        options2: [{
+          value: '选项1',
+          label: '黄金糕1'
+        }, {
+          value: '选项2',
+          label: '双皮奶1'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎1'
+        }, {
+          value: '选项4',
+          label: '龙须面1'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭1'
+        }],
+        tableData3: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-08',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-06',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-07',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }],
+        multipleSelection: []
+      }
+    }
+}
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -82,11 +158,9 @@ export default {}
   border-bottom: 1px solid #d9d9d9;
 }
 
-.menu-tit i {
-  color: #f74894;
-  font-size: 20px;
-  vertical-align: top;
-  margin-right: 3px;
+.menu-tit img {
+  vertical-align: middle;
+  margin:-2px 3px 0 0;
 }
 
 .search-kug {
@@ -96,18 +170,17 @@ export default {}
   margin: 14px 5px 0;
   border-radius: 4px;
   display: flex;
+  font-size: 14px;
 }
 
-.btn {
-  width: 104px;
-  height: 32px;
+.el-button{
+  padding:9px 15px;
   background: #ffe3ee;
   border: 1px solid #f279aa;
   font-size: 14px;
   color: #ef3882;
   border-radius: 4px;
 }
-
 .menu-bar .btns {
   margin: 20px 0 14px 5px;
 }
@@ -122,8 +195,8 @@ export default {}
 
 .search-btn {
   width: 106px;
-  height: 34px;
-  margin: 12px 0 0 36px;
+  height: 36px;
+  margin: 10px 0 0 36px;
   color: #fff;
   font-size: 16px;
   background: #fa4f94;
@@ -134,11 +207,15 @@ export default {}
 .kug-name {
   margin: 10px 0 0 19px;
   line-height: 34px;
+  font-size:14px;
 }
-
-.kug-name input[type=text] {
+.kug-name .el-input{
+  width: 240px;
+  font-size:14px;
+}
+.kug-name .el-input .el-input__inner {
   border: 1px solid #d3d3d3;
-  width: 260px;
+  width: 240px;
   height: 32px;
   padding: 0 10px;
   font-size: 14px;
@@ -154,7 +231,9 @@ export default {}
   margin: 10px 0 0 37px;
   line-height: 34px;
 }
-
+.kug-category .el-select{
+  width: 135px;
+}
 .kug-category select {
   width: 129px;
   height: 34px;
@@ -187,13 +266,14 @@ export default {}
 .tab table {
   font-size: 14px;
 }
-
+.tab table {
+  width: 100%;
+}
 .tab table thead th {
   background: #ef4e86;
   height: 36px;
   color: #fff;
 }
-
 .tab table tbody td {
   border: 1px solid #dfe8ed;
   border-left: 0;
@@ -226,6 +306,7 @@ export default {}
   margin-right: 16px;
   border: 0;
   background: none;
+  padding:0;
 }
 
 .check-btn {
@@ -233,6 +314,7 @@ export default {}
   font-size: 24px;
   border: 0;
   background: none;
+  padding:0;
 }
 
 .checkboxclass input[type=checkbox] {
