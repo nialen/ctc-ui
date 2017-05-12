@@ -34,7 +34,7 @@
       <p class="none">暂无菜单，请添加分类！</p>
     </div>
     <div class="tab">
-      <!-- <table cellspacing="0" cellpadding="0">
+      <table cellspacing="0" cellpadding="0">
         <thead>
           <tr>
             <th width="5%">
@@ -66,29 +66,7 @@
             </td>
           </tr>
         </tbody>
-      </table> -->
-      <template>
-        <el-table ref="multipleTable" :data="tableData3" border tooltip-effect="dark" style="width: 100%">
-          <el-table-column type="selection" width="64"></el-table-column>
-          <el-table-column label="序号" width="75">
-            <template scope="scope">{{}}</template>
-          </el-table-column>
-          <el-table-column prop="name" label="标题" width="332" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="" label="一级分类" width="125" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="" label="二级分类" width="125" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="date" label="发布时间" width="129" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button type="primary" icon="delete" class="del-btn"></el-button>
-              <el-button type="primary" icon="view" class="check-btn"></el-button>
-            </template>
-          </el-table-column>
-        </el-table>  
-      </template>
+      </table>
     </div>
   </div>
 </template>
@@ -192,6 +170,7 @@ export default {
   margin: 14px 5px 0;
   border-radius: 4px;
   display: flex;
+  font-size: 14px;
 }
 
 .el-button{
@@ -216,8 +195,8 @@ export default {
 
 .search-btn {
   width: 106px;
-  height: 34px;
-  margin: 12px 0 0 36px;
+  height: 36px;
+  margin: 10px 0 0 36px;
   color: #fff;
   font-size: 16px;
   background: #fa4f94;
@@ -287,7 +266,7 @@ export default {
 .tab table {
   font-size: 14px;
 }
-/*.tab table {
+.tab table {
   width: 100%;
 }
 .tab table thead th {
@@ -311,7 +290,7 @@ export default {
 .tab table tbody td.text-left {
   text-align: left;
   text-indent: 8px;
-}*/
+}
 
 .text-left img {
   width: 55px;
