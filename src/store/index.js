@@ -4,7 +4,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    role: 'admin', // 角色
+    role: '', // 角色
     directoryId: '', // 当前目录ID
     categoryId: '', // 当前类别ID
     directories: [], // 目录列表
@@ -14,6 +14,9 @@ const store = new Vuex.Store({
   },
   getters: {},
   mutations: {
+    TOGGLE_ROLE(state, role) {
+      state.role = role
+    },
     TOGGLE_DIRECTORY_ID(state, id) {
       state.directoryId = id
       state.categoryId = ''
@@ -35,6 +38,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    toggleRole({ commit }, role) {
+      commit('TOGGLE_ROLE', role)
+    },
     toggleDirectoryId({ commit }, id) {
       commit('TOGGLE_DIRECTORY_ID', id)
     },

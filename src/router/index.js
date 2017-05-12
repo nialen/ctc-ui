@@ -12,8 +12,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/', redirect: '/user' },
-    {
+    { path: '/', redirect: '/user' }, {
       path: '/user',
       component: UserHome,
       redirect: '/user/list',
@@ -21,16 +20,7 @@ export default new Router({
         { path: '/user/list', component: UserList },
         { path: '/user/detail', component: UserDetail }
       ]
-    },
-    // {
-    //   path: '/admin',
-    //   component: AdminHome,
-    //   children: [
-    //     { path: '/admin/list', component: AdminList },
-    //     { path: '/admin/detail', component: AdminDetail }
-    //   ]
-    // },
-    {
+    }, {
       path: '/center',
       component: CenterHome,
       redirect: '/center/menu-management',

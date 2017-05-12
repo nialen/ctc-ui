@@ -6,14 +6,13 @@
 </template>
 <script>
 import header from '@/components/header/';
-
 export default {
   data() {
-    return {
-
-    }
+    return {}
   },
   created() {
+    var role = this.$route.query.role;
+    role == 'admin' && this.$store.dispatch('toggleRole', role);
     this.$store.dispatch('fetchDirectories');
   },
   components: {
