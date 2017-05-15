@@ -17,6 +17,9 @@ export default {
   computed: {
     directories() {
       return this.$store.state.directories;
+    },
+    categories() {
+      return this.$store.state.categories;
     }
   }
 }
